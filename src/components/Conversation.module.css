@@ -1,5 +1,4 @@
 .container {
-    border: 1px solid black;
     background-color: rgb(234, 238, 243);
     height: 70vh;
     overflow: auto;

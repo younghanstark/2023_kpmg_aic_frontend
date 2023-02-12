@@ -1,5 +1,5 @@
 .footer {
-    border: 1px solid black;
+    height: 10vh;
 }
 
 .form {
@@ -11,4 +11,9 @@
 
 .input {
     flex-grow: 1;
+}
+
+.submitBtn {
+    height: 10vh;
+    width: 10vh;
 }

@@ -25,7 +25,7 @@ function Form({ query, disabled }) {
           onChange={handleChange}
           disabled={disabled}
         />
-        <button type="submit" disabled={disabled}>
+        <button className={styles.submitBtn} type="submit" disabled={disabled}>
           Send
         </button>
       </form>
