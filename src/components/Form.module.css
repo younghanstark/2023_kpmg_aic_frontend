@@ -1,0 +1,14 @@
+.footer {
+    border: 1px solid black;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+
+.input {
+    flex-grow: 1;
+}
