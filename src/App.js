@@ -12,18 +12,25 @@ function App() {
     setChats([...chats, newMsg]);
     setDisabled(true);
 
+    const bodyParam =
+      selected === "null"
+        ? { query: input }
+        : { query: input, title: selected };
+    console.log(bodyParam);
+
     const response = await (
-      await fetch(
-        "http://20.115.157.77:8004", {
-          method: 'POST',
-          body: JSON.stringify({query: input, title: selected})
-        }
-      )
+      await fetch("http://20.115.157.77:8004", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bodyParam),
+      })
     ).json();
     setChats((prevState) => {
       const newRes = {
         type: "response",
-        text: response.data.movies[0].summary.slice(0, 3),
+        text: response.answer[0].answer,
       };
       return [...prevState, newRes];
     });
@@ -56,12 +63,16 @@ function App() {
   const [reports, setReports] = useState([]);
   const findReports = async (contextInput) => {
     const response = await (
-      await fetch("http://20.115.157.77:8004/search?keyword=" + contextInput, {
-        mode:"cors"
-      })
-    ).json();
-    setReports(response.result);
-    console.log(reports)
+      await (
+        await fetch(
+          "http://20.115.157.77:8004/search?keyword=" + contextInput,
+          {
+            method: "GET",
+          }
+        )
+      ).json()
+    ).result;
+    setReports(response);
   };
 
   const [selected, setSelected] = useState("null");
@@ -85,7 +96,7 @@ function App() {
             <input
               type="text"
               className={styles.contextInput}
-              placeholder="Enter your context ..."
+              placeholder="Search context ..."
               onChange={handleChange}
               value={contextInput}
             />
@@ -94,7 +105,11 @@ function App() {
             </button>
           </form>
           <h2 style={{ color: "#161252" }}>Current Context</h2>
-          <select className={styles.select} onChange={handleChangeSelect} value={selected}>
+          <select
+            className={styles.select}
+            onChange={handleChangeSelect}
+            value={selected}
+          >
             <option value="null">No context selected.</option>
             {reports.map((report, index) => (
               <option key={index} value={report}>
