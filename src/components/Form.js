@@ -19,14 +19,15 @@ function Form({ query, disabled }) {
     <div className={styles.footer}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <input
-          className={styles.input}
           type="text"
           value={input}
           onChange={handleChange}
           disabled={disabled}
+          className={styles.input}
+          placeholder="Enter your question ..."
         />
-        <button className={styles.submitBtn} type="submit" disabled={disabled}>
-          Send
+        <button className={styles.btn} type="submit" disabled={disabled}>
+          Submit
         </button>
       </form>
     </div>

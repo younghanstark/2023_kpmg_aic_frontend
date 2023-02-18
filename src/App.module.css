@@ -1,15 +1,39 @@
 .header {
-    height: 10vh;
-    text-align: center;
+  height: 10vh;
+  text-align: center;
 }
 
 .logo {
-    height: 100%;
+  height: 100%;
 }
 
 .container {
-    max-width: 800px;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
+  max-width: 600px;
+  width: 100%;
+  margin-left: 1vh;
+  margin-right: 1vh;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.contextInput {
+    flex-grow: 1;
+    margin-right: 1vh;
+    font-size: 16px;
+}
+
+.select {
+  width: 100%;
+}
+
+.btn {
+  height: 5vh;
+  width: 7vh;
+  background-color: #161252;
+  color: white;
+  border-radius: 0.5em;
+  border: 0px;
 }

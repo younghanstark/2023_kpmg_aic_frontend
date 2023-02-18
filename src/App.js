@@ -14,7 +14,10 @@ function App() {
 
     const response = await (
       await fetch(
-        "https://yts.mx/api/v2/list_movies.json?minimum_rating=8.5&sort_by=year"
+        "http://20.115.157.77:8004", {
+          method: 'POST',
+          body: JSON.stringify({query: input, title: selected})
+        }
       )
     ).json();
     setChats((prevState) => {
@@ -37,18 +40,69 @@ function App() {
     scrollToBottom();
   }, [chats]);
 
+  const [contextInput, setContextInput] = useState("");
+
+  function handleChange(e) {
+    setContextInput(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (contextInput === "") return;
+    findReports(contextInput);
+    setContextInput("");
+  }
+
+  const [reports, setReports] = useState([]);
+  const findReports = async (contextInput) => {
+    const response = await (
+      await fetch("http://20.115.157.77:8004/search?keyword=" + contextInput, {
+        mode:"cors"
+      })
+    ).json();
+    setReports(response.result);
+    console.log(reports)
+  };
+
+  const [selected, setSelected] = useState("null");
+  const handleChangeSelect = (e) => {
+    setSelected(e.target.value);
+  };
+
   return (
     <>
       <div className={styles.header}>
-        <img
-          className={styles.logo}
-          src="https://cdn-icons-png.flaticon.com/512/5578/5578817.png"
-          alt="logo"
-        />
+        <img className={styles.logo} src={require("./logo.png")} alt="logo" />
       </div>
-      <div className={styles.container}>
-        <Conversation chats={chats} innerRef={convRef} />
-        <Form query={query} disabled={disabled} />
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <Conversation chats={chats} innerRef={convRef} />
+          <Form query={query} disabled={disabled} />
+        </div>
+        <div className={styles.container}>
+          <h2 style={{ color: "#161252" }}>Search Context (Reports)</h2>
+          <form style={{ display: "flex" }} onSubmit={handleSubmit}>
+            <input
+              type="text"
+              className={styles.contextInput}
+              placeholder="Enter your context ..."
+              onChange={handleChange}
+              value={contextInput}
+            />
+            <button className={styles.btn} type="submit">
+              Submit
+            </button>
+          </form>
+          <h2 style={{ color: "#161252" }}>Current Context</h2>
+          <select className={styles.select} onChange={handleChangeSelect} value={selected}>
+            <option value="null">No context selected.</option>
+            {reports.map((report, index) => (
+              <option key={index} value={report}>
+                {report}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </>
   );
